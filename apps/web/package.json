@@ -1,0 +1,33 @@
+{
+  "name": "@dfx-crm/web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "tsx --test src/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@dfx-crm/core": "workspace:*",
+    "@dfx-crm/mock-data": "workspace:*",
+    "@ant-design/icons": "^6.0.0",
+    "antd": "^6.6.7",
+    "antd-mobile": "^5.43.0",
+    "dayjs": "^1.11.13",
+    "exceljs": "^4.4.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@types/node": "^24.0.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "~5.9.3",
+    "vite": "^8.3.5"
+  }
+}

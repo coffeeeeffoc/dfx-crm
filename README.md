@@ -4,21 +4,41 @@
 
 ## 启动
 
-需要 Node.js 22.12+（或 24 LTS）和 npm。
+需要 Node.js 24 和 pnpm 12.6.0（根 `package.json` 的 `packageManager` 锁定版本）。
 
 ```powershell
 cd I:\dfx-crm
-npm ci
-npm run dev
+pnpm install --frozen-lockfile
+pnpm dev
 ```
 
 打开 <http://localhost:5173>。开发服务监听局域网；同网络手机可使用终端打印的 Network 地址，Windows 防火墙需允许该端口。
 
 ```powershell
-npm test          # 核心业务逻辑检查
-npm run build    # TypeScript + Vite 生产构建，输出 dist/
-npm run preview  # 查看生产构建
+pnpm test           # 业务回归和 mock 数据检查
+pnpm typecheck      # 所有子包的 TypeScript 检查
+pnpm build          # 类型检查 + Vite 构建，输出 apps/web/dist/
+pnpm preview        # 查看生产构建
+pnpm fields:export  # 更新文档中的字段注册表
 ```
+
+## 仓库结构与部署
+
+这是单个 Git 仓库中的 pnpm workspace，多包共用根目录的 `pnpm-lock.yaml`。
+
+| 目录 | 包 | 职责 |
+| --- | --- | --- |
+| `apps/web` | `@dfx-crm/web` | React + Vite 前端 |
+| `apps/api` | `@dfx-crm/api` | 空后端项目，只有 TypeScript 入口和检查 |
+| `packages/core` | `@dfx-crm/core` | 业务模型、权限、记录与字段定义 |
+| `packages/mock-data` | `@dfx-crm/mock-data` | 供前端和测试使用的本地演示数据 |
+| `scripts` | 根目录工具 | 材料核对、录音转录、字段导出 |
+
+前端始终使用 mock 初始数据，操作仍保存在当前浏览器；无需后端或环境变量即可运行。后端没有接口、服务、数据库或启动命令。共享包通过 `workspace:*` 链接，Vite 直接编译其 TypeScript 源码。
+
+GitHub Actions 在推送 `main`、`dev` 或向这两个分支提交 PR 时执行锁定依赖安装、测试、所有包类型检查和前端构建。仅 `main` 部署正式 GitHub Pages；`dev` 构建不会覆盖正式站点。也支持在 Actions 中手动运行。
+
+演示站点：[GitHub Pages](https://coffeeeeffoc.github.io/dfx-crm/)。构建时通过 `VITE_BASE_PATH=/dfx-crm/` 设置资源前缀，hash 路由支持直接打开和刷新业务菜单。Pages 只上传 `apps/web/dist/`，不包含原始材料、录音或转录稿。源码仓库按项目所有者授权设为公开，源码中的材料和历史提交也公开；`materials` 下的 WAV 继续通过 `.gitignore` 排除。
 
 ## 技术与数据
 
@@ -31,7 +51,7 @@ npm run preview  # 查看生产构建
 - 联系人、电话、邮箱和交易为演示数据；未导入原始截图中的银行账户等信息。人员/品牌沿用需求材料作为演示词汇，人员归属不代表真实组织现状。
 - 同一网站地址下共享本机数据。`localhost`、`127.0.0.1`、局域网 IP 是不同存储空间，不会同步。清理站点数据会清除演示记录与附件。
 - 系统管理支持导出业务 JSON，**不含附件文件**。当前没有 JSON 恢复入口。
-- 原始材料、转录稿和模型缓存不进入 `dist/`，Vite 开发服务也禁止通过文件路径访问这些目录。
+- 原始材料、转录稿和模型缓存不进入 `apps/web/dist/`，Vite 开发服务也禁止通过文件路径访问这些目录。
 
 ## 推荐演示路径
 

@@ -1,0 +1,15 @@
+{
+  "name": "@dfx-crm/core",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    "./domain": "./src/domain.ts",
+    "./access": "./src/access.ts",
+    "./records": "./src/records.ts",
+    "./material-fields": "./src/material-fields.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

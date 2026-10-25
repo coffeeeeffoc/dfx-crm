@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { writeFileSync } from "node:fs";
-import { migrateAdministration } from "../src/access";
-import { createSeed } from "../src/seed";
+import { migrateAdministration } from "@dfx-crm/core/access";
+import { createSeed } from "@dfx-crm/mock-data";
 
 const fields = migrateAdministration(createSeed()).admin!.fields;
 for (const [kind, definitions] of Object.entries(fields)) {

@@ -1,0 +1,16 @@
+{
+  "name": "@dfx-crm/mock-data",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test src/*.test.ts"
+  },
+  "dependencies": {
+    "@dfx-crm/core": "workspace:*"
+  }
+}

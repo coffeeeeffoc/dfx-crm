@@ -1,5 +1,17 @@
 # 原型验证记录
 
+## pnpm workspace 迁移（2026-10-25）
+
+- `pnpm install --frozen-lockfile` 成功；从原 npm 锁文件导入既有依赖版本，仅允许 esbuild 必要的安装脚本。
+- `pnpm test`：33 项通过（原有 32 项加 mock 数据实例独立性、客户关联和演示邮箱检查）。
+- `pnpm build`：api、core、mock-data、web 四包类型检查通过，Vite 生产构建通过，产物位于 `apps/web/dist/`；以 `VITE_BASE_PATH=/dfx-crm/` 验证 Pages 资源前缀。
+- `pnpm fields:export`：16 组、483 项字段，输出与迁移前一致。
+- 前端继续通过 mock 数据初始化，本机存储 key 和附件库名称沿用原值；后端只有空 TypeScript 入口。
+- `.github/workflows/frontend.yml` 在 main/dev 推送和 PR 时验证；正式 Pages 由 main 发布，构建产物不含材料目录。
+- 依赖安装沿用的 antd-mobile 间接依赖仍有 React 19 peer 版本提示；Vite 仍有大包体积提示，本次未扩展到依赖升级或拆包优化。
+
+以下为迁移前的原型验收记录，当时使用 npm 和根目录 `dist/`。
+
 日期：2026-10-25。本机 Windows、Chromium 内嵌浏览器。浏览器操作验证使用 `127.0.0.1:5173` 的独立演示存储；用户预览 `localhost:5173` 保留初始演示资料。
 
 ## 构建和逻辑检查
