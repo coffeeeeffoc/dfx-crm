@@ -217,7 +217,7 @@ export default function App() {
   }, []);
   useEffect(() => {
     const listener = () => {
-      const key = location.hash.slice(1);
+      const key = location.hash.slice(1) || "dashboard";
       if (nav.some((n) => n.key === key)) setPage(key as Page);
     };
     window.addEventListener("hashchange", listener);

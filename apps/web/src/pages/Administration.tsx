@@ -815,19 +815,24 @@ export default function AdministrationPage() {
                     JSON 中。不同地址、不同设备的本地数据相互独立。
                   </p>
                   <Button
-                    onClick={() => {
-                      download(
-                        new Blob([JSON.stringify(state, null, 2)], {
-                          type: "application/json",
-                        }),
-                        `CRM-备份-${today()}.json`,
-                      );
-                      change(
-                        "导出备份",
-                        "全部业务与配置",
-                        (s) => ({ ...s }),
-                        true,
-                      );
+                    onClick={async () => {
+                      try {
+                        const exported = await download(
+                          new Blob([JSON.stringify(state, null, 2)], {
+                            type: "application/json",
+                          }),
+                          `CRM-备份-${today()}.json`,
+                        );
+                        if (!exported) return;
+                        change(
+                          "导出备份",
+                          "全部业务与配置",
+                          (s) => ({ ...s }),
+                          true,
+                        );
+                      } catch (error) {
+                        message.error(`导出失败：${(error as Error).message}`);
+                      }
                     }}
                   >
                     导出 JSON 备份

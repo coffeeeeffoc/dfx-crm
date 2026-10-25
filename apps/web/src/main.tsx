@@ -5,7 +5,9 @@ import zhCN from "antd/locale/zh_CN";
 import { ConfigProvider as MobileConfig } from "antd-mobile";
 import dayjs from "dayjs";
 import "dayjs/locale/zh-cn";
+import { Capacitor } from "@capacitor/core";
 import App from "./App";
+import PwaUpdate from "./pwa-update";
 import "./styles.css";
 
 dayjs.locale("zh-cn");
@@ -41,6 +43,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <MobileConfig>
         <AntApp>
           <App />
+          {import.meta.env.MODE !== "native" && !Capacitor.isNativePlatform() && (
+            <PwaUpdate />
+          )}
         </AntApp>
       </MobileConfig>
     </ConfigProvider>

@@ -12,6 +12,8 @@
     "dev": "pnpm --filter @dfx-crm/web dev",
     "build": "pnpm typecheck && pnpm --filter @dfx-crm/web build",
     "preview": "pnpm --filter @dfx-crm/web preview",
+    "android:sync": "pnpm --filter @dfx-crm/web android:sync",
+    "android:open": "pnpm --filter @dfx-crm/web android:open",
     "test": "pnpm -r --if-present test",
     "typecheck": "pnpm -r --if-present typecheck",
     "fields:export": "tsx scripts/export-field-registry.ts"

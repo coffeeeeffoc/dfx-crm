@@ -468,11 +468,12 @@ export function DailyPage() {
       ),
     ];
     try {
-      await exportExcel(
+      const exported = await exportExcel(
         `${person}-${date}-${period}`,
         ["日期", "类型", "标题", "内容"],
         data,
       );
+      if (!exported) return;
       change(
         "导出工作报告",
         `${person} · ${start}至${date}`,
@@ -862,11 +863,12 @@ export function ReportsPage() {
                 const columns = visibleColumns("export");
                 if (!columns.length)
                   return void message.warning("没有可导出的统计字段");
-                await exportExcel(
+                const exported = await exportExcel(
                   "销售统计",
                   columns.map((c) => c.title),
                   rows.map((r) => columns.map((c) => (r as any)[c.key])),
                 );
+                if (!exported) return;
                 change("导出统计", group, (s) => ({ ...s }), true);
               } catch {
                 message.error("导出失败");

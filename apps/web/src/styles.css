@@ -12,12 +12,18 @@
   --border: #edf0f5;
   --adm-color-primary: #3866dc;
   --adm-font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  --app-safe-top: var(--safe-area-inset-top, env(safe-area-inset-top, 0px));
+  --app-safe-bottom: var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
+  --app-safe-left: var(--safe-area-inset-left, env(safe-area-inset-left, 0px));
+  --app-safe-right: var(--safe-area-inset-right, env(safe-area-inset-right, 0px));
 }
 * {
   box-sizing: border-box;
 }
 body {
   margin: 0;
+  padding-left: var(--app-safe-left);
+  padding-right: var(--app-safe-right);
 }
 button,
 input,
@@ -84,6 +90,9 @@ strong {
   background: #fff;
   position: fixed;
   inset: 0 auto 0 0;
+  left: var(--app-safe-left);
+  padding-top: var(--app-safe-top);
+  padding-bottom: var(--app-safe-bottom);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -247,12 +256,13 @@ strong {
   margin-left: 224px;
 }
 .topbar {
-  height: 68px;
+  height: calc(68px + var(--app-safe-top));
   background: #ffffffed;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 34px;
+  padding-top: var(--app-safe-top);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
@@ -2209,8 +2219,9 @@ strong {
     margin-left: 0;
   }
   .topbar {
-    height: 58px;
+    height: calc(58px + var(--app-safe-top));
     padding: 0 17px;
+    padding-top: var(--app-safe-top);
   }
   .breadcrumb {
     gap: 8px;
@@ -2235,7 +2246,7 @@ strong {
     padding: 0;
   }
   .main-content {
-    padding: 23px 16px 80px;
+    padding: 23px 16px calc(80px + var(--app-safe-bottom));
   }
   .welcome-row {
     align-items: flex-start;
@@ -2498,13 +2509,13 @@ strong {
     display: block;
     position: fixed;
     bottom: 0;
-    left: 0;
-    right: 0;
+    left: var(--app-safe-left);
+    right: var(--app-safe-right);
     background: #fffffff5;
     backdrop-filter: blur(16px);
     border-top: 1px solid #e8eef7;
     z-index: 30;
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: var(--app-safe-bottom);
   }
   .mobile-tabbar .adm-tab-bar-item {
     padding: 10px 0 8px;

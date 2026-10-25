@@ -50,7 +50,8 @@ export function ExportRecords({
           );
           if (!output.headers.length)
             return void message.warning("没有可导出的字段");
-          await exportExcel(pageNames[target], output.headers, output.rows);
+          const exported = await exportExcel(pageNames[target], output.headers, output.rows);
+          if (!exported) return;
           change(
             "导出列表",
             `${pageNames[target]} · ${records.length} 条`,

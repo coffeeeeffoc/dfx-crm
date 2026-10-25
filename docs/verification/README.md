@@ -1,5 +1,19 @@
 # 原型验证记录
 
+## React + PWA + Capacitor（2026-10-25）
+
+- `pnpm test`：36 项通过（35 项前端、1 项 mock）。新增 Pages/native 构建路径隔离、PWA 启停、安装图标尺寸，以及模拟原生桥下的分块文件、路径安全、取消和读写失败检查；原生分块以 2MiB+7 字节逐字节比对。
+- `pnpm build`：四包类型检查及 Web/PWA 构建通过。`pnpm android:sync`：独立原生构建与两个原生文件插件同步通过。CI 增加原生资源构建/同步，未增加 iOS 或远程推送配置。
+- Chrome 156.0.8078.47 无头浏览器分别验证 `/` 与 `/dfx-crm/`：manifest 无解析错误，启动地址和 Service Worker scope 正确，图标均可获取；离线重新打开、离线 Excel 按需加载/导出通过。浏览器返回无 hash 地址时恢复工作台。
+- 在隔离测试服务中改变 Service Worker 字节触发更新：提示出现前后页面未自行刷新，点击“保存完毕，更新”后刷新，localStorage 保留。仅断言应用脚本无运行异常；测试阻断外部 Google Fonts，离线使用系统字体回退。
+- Android 使用 JDK 21、SDK Platform 36、Build Tools 35 构建 debug APK 成功。Google Maven 首次下载遇到 TLS 错误后，本机构建显式沿用已配置的系统代理完成依赖获取；仓库仍使用官方仓库。最终增量构建在离线模式下通过。
+- Android 14 / API 34 的 Pixel 3a 只读模拟器安装、启动通过。修复启动主题产生原生标题栏遮挡的问题；顶部标题、底部导航位于可用区域，viewport/scrollWidth 均为 393，没有横向溢出。原生环境 Service Worker 注册数为 0。
+- Android 模拟器实际点击客户入口、导出 Excel，确认系统分享面板打开；从 App 缓存取出 10,753 字节文件，用 ExcelJS 重新读取成功。原生与 PWA 的客户导出均为 18 条记录、36 列。取消分享后数据和审计记录不变；返回键从客户页回到工作台，根页面返回退出。
+- 调试 APK：`apps/web/android/app/build/outputs/apk/debug/app-debug.apk`，5,611,410 字节；SHA-256：`d539749a3cd50a6342898b6a4d4ee18f977f6fee62de0f2ccf47d3002e355322`。使用开发签名，尚未制作正式发布签名包。
+- 截图：[Android 模拟器](cross-platform-android.png)、[PWA 离线手机视口](cross-platform-pwa-offline.png)、[PWA 更新提示](cross-platform-pwa-update.png)。使用与用户浏览器相互独立的测试存储；没有向外部应用实际发送文件。
+
+以上为本地验收结果，推送后的 CI 和 Pages 部署状态以对应提交的 [Actions 运行](https://github.com/coffeeeeffoc/dfx-crm/actions/workflows/frontend.yml) 为准。未生成/验证 iOS 原生工程，未做物理手机、真实推送、跨端数据同步、实际接收应用保存文件或 200MB 附件压力验收；现有后端仍为空入口。安装、构建与后续接入方式见 [跨端说明](../cross-platform.md)。
+
 ## pnpm workspace 迁移（2026-10-25）
 
 - `pnpm install --frozen-lockfile` 成功；从原 npm 锁文件导入既有依赖版本，仅允许 esbuild 必要的安装脚本。

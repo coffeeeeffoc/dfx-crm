@@ -19,6 +19,8 @@ pnpm test           # 业务回归和 mock 数据检查
 pnpm typecheck      # 所有子包的 TypeScript 检查
 pnpm build          # 类型检查 + Vite 构建，输出 apps/web/dist/
 pnpm preview        # 查看生产构建
+pnpm android:sync   # 构建 Android 使用的资源并同步原生工程
+pnpm android:open   # 用 Android Studio 打开工程
 pnpm fields:export  # 更新文档中的字段注册表
 ```
 
@@ -28,7 +30,7 @@ pnpm fields:export  # 更新文档中的字段注册表
 
 | 目录 | 包 | 职责 |
 | --- | --- | --- |
-| `apps/web` | `@dfx-crm/web` | React + Vite 前端 |
+| `apps/web` | `@dfx-crm/web` | React + Vite，Web/H5/PWA 与 Capacitor Android 工程 |
 | `apps/api` | `@dfx-crm/api` | 空后端项目，只有 TypeScript 入口和检查 |
 | `packages/core` | `@dfx-crm/core` | 业务模型、权限、记录与字段定义 |
 | `packages/mock-data` | `@dfx-crm/mock-data` | 供前端和测试使用的本地演示数据 |
@@ -36,7 +38,7 @@ pnpm fields:export  # 更新文档中的字段注册表
 
 前端始终使用 mock 初始数据，操作仍保存在当前浏览器；无需后端或环境变量即可运行。后端没有接口、服务、数据库或启动命令。共享包通过 `workspace:*` 链接，Vite 直接编译其 TypeScript 源码。
 
-GitHub Actions 在推送 `main`、`dev` 或向这两个分支提交 PR 时执行锁定依赖安装、测试、所有包类型检查和前端构建。仅 `main` 部署正式 GitHub Pages；`dev` 构建不会覆盖正式站点。也支持在 Actions 中手动运行。
+GitHub Actions 在推送 `main`、`dev` 或向这两个分支提交 PR 时执行锁定依赖安装、测试、所有包类型检查、Web/PWA 构建和 Android 资源构建/同步。仅 `main` 部署正式 GitHub Pages；`dev` 构建不会覆盖正式站点。也支持在 Actions 中手动运行。
 
 演示站点：[GitHub Pages](https://coffeeeeffoc.github.io/dfx-crm/)。构建时通过 `VITE_BASE_PATH=/dfx-crm/` 设置资源前缀，hash 路由支持直接打开和刷新业务菜单。Pages 只上传 `apps/web/dist/`，不包含原始材料、录音或转录稿。源码仓库按项目所有者授权设为公开，源码中的材料和历史提交也公开；`materials` 下的 WAV 继续通过 `.gitignore` 排除。
 
@@ -45,6 +47,7 @@ GitHub Actions 在推送 `main`、`dev` 或向这两个分支提交 PR 时执行
 ## 技术与数据
 
 - Vite + React + TypeScript。
+- 同一前端支持 Web/H5、可安装 PWA 和 Capacitor Android；iOS 为后续可增加的平台。[跨端安装、构建和推送边界](docs/cross-platform.md)。
 - 桌面表格、表单、详情、弹窗使用 Ant Design；移动导航、搜索、沟通弹层和部分操作使用 Ant Design Mobile（adm）。小于 768px 切换卡片列表。
 - 默认系统管理员，右上角切换演示用户，其角色与直属领导由“系统管理”配置；移动端切换入口在“更多”。
 - 系统管理可配置企业全称、简称、Logo，新增/修改/删除用户，维护组织领导关系、动态角色和页面字段。普通用户统一查看本人及所有层级下属的数据，公共池等共享资料按规则例外。

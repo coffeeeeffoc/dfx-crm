@@ -1,5 +1,6 @@
 import type { Attachment, State } from "@dfx-crm/core/domain";
 import { uid } from "@dfx-crm/core/domain";
+import { Capacitor } from "@capacitor/core";
 
 export const storageKey = "xingpu-crm-prototype-v1";
 export function validateState(value: unknown): value is State {
@@ -115,7 +116,10 @@ export async function saveAttachment(file: File): Promise<Attachment> {
   return { id, name: file.name, type: file.type, size: file.size };
 }
 export async function openAttachment(attachment: Attachment, preview = false) {
-  const isPreview = preview && /\.(png|jpe?g|pdf)$/i.test(attachment.name);
+  const isPreview =
+    !Capacitor.isNativePlatform() &&
+    preview &&
+    /\.(png|jpe?g|pdf)$/i.test(attachment.name);
   const popup = isPreview ? window.open("about:blank", "_blank") : null;
   if (popup) popup.opener = null;
   try {
@@ -140,19 +144,24 @@ export async function openAttachment(attachment: Attachment, preview = false) {
       const url = URL.createObjectURL(file);
       popup.location.href = url;
       setTimeout(() => URL.revokeObjectURL(url), 60000);
-    } else download(file, attachment.name);
+    } else await download(file, attachment.name);
   } catch (e) {
     popup?.close();
     throw e;
   }
 }
-export function download(blob: Blob, name: string) {
+export async function download(blob: Blob, name: string): Promise<boolean> {
+  if (Capacitor.isNativePlatform()) {
+    const { shareNativeFile } = await import("./native-files");
+    return shareNativeFile(blob, name);
+  }
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
   a.download = name;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
+  return true;
 }
 export async function exportExcel(
   name: string,
@@ -178,7 +187,7 @@ export async function exportExcel(
     to: { row: 1, column: headers.length },
   };
   const buffer = await workbook.xlsx.writeBuffer();
-  download(
+  return download(
     new Blob([buffer as BlobPart], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     }),
