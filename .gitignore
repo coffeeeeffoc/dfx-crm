@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.cache/
+*.log
+*.tsbuildinfo
+.env*
+test-results/
+__pycache__/
+/materials/**/*.[wW][aA][vV]

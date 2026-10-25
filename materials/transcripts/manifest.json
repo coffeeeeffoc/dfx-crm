@@ -1,0 +1,26 @@
+[
+  {
+    "source": "录音机-20261024-1405_1.wav",
+    "duration": 3444.881,
+    "segments": 114,
+    "last_speech_end": 3444.88,
+    "model": "faster-whisper-large-v3-turbo",
+    "revision": "0a363e9161cbc7ed1431c9597a8ceaf0c4f78fcf"
+  },
+  {
+    "source": "录音机-20261024-1405_2.wav",
+    "duration": 3436.679,
+    "segments": 88,
+    "last_speech_end": 3421.33,
+    "model": "faster-whisper-large-v3-turbo",
+    "revision": "0a363e9161cbc7ed1431c9597a8ceaf0c4f78fcf"
+  },
+  {
+    "source": "录音机-20261024-1405_3.wav",
+    "duration": 355.038,
+    "segments": 11,
+    "last_speech_end": 355.04,
+    "model": "faster-whisper-large-v3-turbo",
+    "revision": "0a363e9161cbc7ed1431c9597a8ceaf0c4f78fcf"
+  }
+]
