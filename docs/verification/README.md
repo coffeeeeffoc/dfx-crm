@@ -8,6 +8,8 @@
 - `pnpm fields:export`：16 组、483 项字段，输出与迁移前一致。
 - 前端继续通过 mock 数据初始化，本机存储 key 和附件库名称沿用原值；后端只有空 TypeScript 入口。
 - `.github/workflows/frontend.yml` 在 main/dev 推送和 PR 时验证；正式 Pages 由 main 发布，构建产物不含材料目录。
+- 实现提交 `433b1e6` 的 [main 构建与 Pages 部署](https://github.com/coffeeeeffoc/dfx-crm/actions/runs/40182825919) 均成功；线上入口、JS、CSS 返回 200，资源内容与本地产物逐字节一致。
+- 使用无头 Chrome 验证线上工作台、客户档案、mock 客户“华东理工大学”和 `#customers` 刷新；无运行异常、无 fetch/XHR 数据请求。内嵌浏览器连接不可用，改用自动化浏览器检查。
 - 依赖安装沿用的 antd-mobile 间接依赖仍有 React 19 peer 版本提示；Vite 仍有大包体积提示，本次未扩展到依赖升级或拆包优化。
 
 以下为迁移前的原型验收记录，当时使用 npm 和根目录 `dist/`。

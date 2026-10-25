@@ -40,6 +40,8 @@ GitHub Actions 在推送 `main`、`dev` 或向这两个分支提交 PR 时执行
 
 演示站点：[GitHub Pages](https://coffeeeeffoc.github.io/dfx-crm/)。构建时通过 `VITE_BASE_PATH=/dfx-crm/` 设置资源前缀，hash 路由支持直接打开和刷新业务菜单。Pages 只上传 `apps/web/dist/`，不包含原始材料、录音或转录稿。源码仓库按项目所有者授权设为公开，源码中的材料和历史提交也公开；`materials` 下的 WAV 继续通过 `.gitignore` 排除。
 
+本地复现 Pages 路径时，在同一个 PowerShell 会话设置 `$env:VITE_BASE_PATH = '/dfx-crm/'` 后运行 `pnpm build` 和 `pnpm preview`，访问预览地址下的 `/dfx-crm/`。常规本地开发不需要设置这个变量。
+
 ## 技术与数据
 
 - Vite + React + TypeScript。
